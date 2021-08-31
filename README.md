@@ -1,6 +1,8 @@
 # onoff
 
-If you own a [Netgear XR500]() router and want the ability to toggle your guest network on/off then this utility might be for you. It can be used in interactive or backgroud mode (to automate on a schedule).
+If you own a [Netgear XR500](https://www.netgear.com/home/online-gaming/routers/xr500/) router and want the ability to toggle your guest network on/off then this utility might be for you. It can be used in interactive or backgroud mode (to automate on a schedule).
+
+![Demo](onoff.gif)
 
 ## System requirements
 
@@ -15,22 +17,22 @@ npm install -g .
 
 ## Usage
 
-`kidsoff --help`
+`onoff --help`
 
 **Result**
 
 ```groovy
-kidsoff <command>
+onoff <command>
 
 Commands:
-  kidsoff background [options]  Examples:
-                                kidsoff background --password <password>
+  onoff background [options]  Examples:
+                                onoff background --password <password>
                                 ... is the same as ...
-                                kidsoff b -p <password>             [aliases: b]
-  kidsoff interactive           Examples:
-                                kidsoff interactive
+                                onoff b -p <password>             [aliases: b]
+  onoff interactive           Examples:
+                                onoff interactive
                                 ... is the same as ...
-                                kidsoff i                           [aliases: i]
+                                onoff i                           [aliases: i]
 
 Options:
   --version  Show version number                                       [boolean]
@@ -39,17 +41,17 @@ Options:
 
 ### Interactive
 
-`kidsoff interactive --help`
+`onoff interactive --help`
 
 **Result**
 
 ```groovy
-kidsoff interactive
+onoff interactive
 
 Examples:
-kidsoff interactive
+onoff interactive
 ... is the same as ...
-kidsoff i
+onoff i
 
 Options:
   --version  Show version number                                       [boolean]
@@ -58,17 +60,17 @@ Options:
 
 ### Backgroud
 
-`kidsoff background --help`
+`onoff background --help`
 
 **Result**
 
 ```groovy
-kidsoff background [options]
+onoff background [options]
 
 Examples:
-kidsoff background --password <password>
+onoff background --password <password>
 ... is the same as ...
-kidsoff b -p <password>
+onoff b -p <password>
 
 Options:
   --version        Show version number                                 [boolean]

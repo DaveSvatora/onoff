@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Turn guest network for Netgear XR500 router off / on",
   "bin": {
-    "kidsoff": "./kidsoff.js"
+    "onoff": "./onoff.js"
   },
   "keywords": [
     "cli"
