@@ -1,5 +1,6 @@
 {
   "name": "onoff",
+  "type": "module",
   "version": "1.0.0",
   "description": "Turn guest network for Netgear XR500 router off / on",
   "bin": {
@@ -12,10 +13,10 @@
   "author": "Dev",
   "license": "ISC",
   "dependencies": {
-    "@inquirer/password": "0.0.15-alpha.0",
+    "@inquirer/password": "0.0.16-alpha.0",
     "chalk": "^4.1.2",
-    "ora": "^5.4.1",
-    "puppeteer": "^10.1.0",
-    "yargs": "^17.0.1"
+    "ora": "^6.0.1",
+    "puppeteer": "^10.2.0",
+    "yargs": "^17.1.1"
   }
 }

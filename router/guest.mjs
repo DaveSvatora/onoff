@@ -1,5 +1,6 @@
-const puppeteer = require('puppeteer');
-const ora = require('ora');
+import puppeteer from 'puppeteer';
+import ora from 'ora';
+
 const spinner = new ora();
 spinner.spinner = 'pong'
 
@@ -12,16 +13,20 @@ const guestSettingsApply = '#apply'
 const frameGuestSub = 'formframe'
 const frameSettingsSub = 'http://192.168.1.1/adv_index.htm'
 
-async function routerScript(pw, isOn) {
+async function routerScript(pw) {
 
-    await spin(isOn, 'Toggling Guest Network On / Off')
-
+    await spinner.start('Toggling Guest Network On / Off')
     const CREDS = {
         username: "admin",
         password: pw
     }
     // launch browser, if you want to watch turn headless to false
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        headless: true
+    });
+
+    // const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.setViewport({ width: 1200, height: 720 })
 
@@ -29,26 +34,27 @@ async function routerScript(pw, isOn) {
     await page.authenticate(CREDS);
     await page.goto('http://192.168.1.1');
 
-    await text(isOn, 'Logging in')
+    spinner.text = 'Logging in'
 
     // click settings, router pages are a bit slow so lots of waiting
     await page.waitForTimeout(8000);
+    // await page.screenshot({ path: 'loggedin.png' });
     await page.click(settingsSelector)
 
-    await text(isOn, 'Navigating to Settings')
+    spinner.text = 'Navigating to Settings'
 
     // click guest network
     await page.waitForTimeout(4000);
     const settingsFrame = page.frames().find(frame => frame.url() === frameSettingsSub);
     await settingsFrame.click(guestSelector)
 
-    await text(isOn, 'Navigating to Guest Network Settings')
+    spinner.text = 'Navigating to Guest Network Settings'
 
     // wait guest settings frame to load
     await page.waitForTimeout(4000);
     const guestFrame = page.frames().find(frame => frame.name() === frameGuestSub);
 
-    await text(isOn, 'Toggling On / Off')
+    spinner.text = 'Toggling On / Off'
 
     // check enable / disable guest 2.4ghz
     await guestFrame.waitForSelector(guestCheckbox1);
@@ -58,7 +64,7 @@ async function routerScript(pw, isOn) {
     await guestFrame.waitForSelector(guestCheckbox2);
     await guestFrame.click(guestCheckbox2);
 
-    await text(isOn, 'Saving...')
+    spinner.text = 'Saving...'
 
     // check apply
     await guestFrame.waitForSelector(guestSettingsApply);
@@ -68,40 +74,14 @@ async function routerScript(pw, isOn) {
     await page.screenshot({ path: 'final.png' });
     await browser.close();
 
-    return await success(isOn)
+    return await spinner.succeed('Success: Wifi may disconnect briefly')
 };
 
-async function turnoff(password, isOn) {
+export async function turnoff(password) {
     try {
-        return await routerScript(password, isOn);
+        return await routerScript(password);
     } catch (error) {
         console.log(error)
-        return await fail(isOn, error)
-    }
-}
-
-async function spin(isOn, spinText) {
-    if (isOn) {
-        return spinner.start(spinText)
-    }
-}
-
-async function text(isOn, spinText) {
-    if (isOn) {
-        return spinner.text = spinText
-    }
-}
-
-async function success(isOn) {
-    if (isOn) {
-        return await spinner.succeed('Success: Wifi may disconnect briefly')
-    }
-}
-
-async function fail(isOn, error) {
-    if (isOn) {
         return await spinner.fail(error.message)
     }
 }
-
-module.exports = { turnoff }
